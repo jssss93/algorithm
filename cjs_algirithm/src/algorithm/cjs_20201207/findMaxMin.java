@@ -4,7 +4,8 @@ public class findMaxMin {
 	
 	public static void main(String args[]){
 		findMaxMin func = new findMaxMin();
-		func.solution("1 2 3 4");
+		String answer = func.solution("1 2 3 4");
+		System.out.println(answer);
 	}
 	public String solution(String s){
 		String answer = "";
