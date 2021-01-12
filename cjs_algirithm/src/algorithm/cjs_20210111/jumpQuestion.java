@@ -35,6 +35,8 @@ package algorithm.cjs_20210111;
 //
 //입출력 예 #3
 //위와 같은 방식으로 합니다.
+
+
 public class jumpQuestion {
 	public static void main(String args[]){
 		jumpQuestion sol = new jumpQuestion();
@@ -47,7 +49,6 @@ public class jumpQuestion {
 		
 		while(n!=1){
 			if(n%2==0){
-				//짝수
 				n=n/2;
 			}else{
 				ans++;
