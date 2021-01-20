@@ -2,7 +2,11 @@ package algorithm.cjs_20201222;
 
 import java.math.BigInteger;
 
-public class test1{
+public class gcdTest{
+	
+	//	유클리드 호제법 참조.
+	//	최대공약수 최소공배수 구하는 방법 기억.
+	//	https://greenapple16.tistory.com/89
 	
 	private static int getGcd(int a, int b){
 		BigInteger num1 = BigInteger.valueOf(a);
