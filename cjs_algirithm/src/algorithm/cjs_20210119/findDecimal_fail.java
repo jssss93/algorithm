@@ -33,51 +33,80 @@ public class findDecimal_fail {
 	public int solution(String numbers) {
         int answer = 0;
         
-        int[] complex = new int[numbers.length()*numbers.length()];
+        String[] input = new String[numbers.length()];
+        String[] output = new String[numbers.length()];
+        boolean[] check = new boolean[numbers.length()];
+        List outputList = new ArrayList<>();
         
-        String str="";
-        
-        for(int i=0;i<1;i++){
-        	int intervalCnt = 0;
-        	List inputList = new ArrayList();
-        	inputList.add(i);
-        	str = numbers.charAt(i)+"";
-        	System.out.println(inputList);
-        	str = for2(numbers,str,inputList,intervalCnt);
-        	System.out.println("------------------");
-        	System.out.println("------------------");
-        	System.out.println("------------------");
-        	
+        for(int i=0;i<input.length;i++){
+        	input[i]= numbers.charAt(i)+"";
         }
-        
+        permutation(numbers.length(), numbers.length(), input, check, output, 0,outputList);
+        System.out.println(outputList);
+        answer = sosuCounting(outputList,answer);
+        System.out.println(answer);
         return answer;
     }
 	
-	public String for2(String numbers,String str,List inputList,int intervalCnt){
-		System.out.println("for2======");
-		String retStr = str;
-		List retInputList = inputList;
-		if(intervalCnt<numbers.length()){
-			
-			
-			for(int i=0;i<numbers.length();i++){
-//				System.out.println(retInputList);
-				if(!retInputList.contains(i)){
-					retInputList.add(i);
-					System.out.println(retInputList);
-					
-					intervalCnt++;
-					retStr+=numbers.charAt(i)+"";
-					for2(numbers, str, inputList,intervalCnt);
-					
-					System.out.println();
+	public int findSosu(int n) { 
+		int answer = 0;
+		boolean[] sosu =new boolean [n+1]; 
+		for(int i=2; i<=n ; i++) 
+			sosu[i]=true; 
+		//2~n번째수를 true로 초기화 
+		//제곱근 구하기 
+		int root=(int)Math.sqrt(n); 
+		
+		for(int i=2; i<=root; i++){ 
+			//2~루트n까지 검사 
+			if(sosu[i]==true){ 
+				//i번째의 수가 소수일 때 
+				for(int j=i; i*j<=n; j++){ 
+					//그 배수들을 다 false로 초기화(배수는 소수가 아니기 때문) 
+					sosu[i*j]=false; 
 				}
-				retInputList=inputList;
+			} 
+		} 
+		for(int i =2; i<=n; i++) {
+			if(sosu[i]==true){ 
+				//소수의 개수 세기 
+				answer++; 
+			}
+		} 
+		return answer; 
+			
+	}
+
+		
+	public int sosuCounting(List outputList,int answer){
+		for(int i=0;i<outputList.size();i++){
+			if(!((outputList.get(i)+"").charAt(0)+"").equals("0")){
+				
+				answer++;
 			}
 		}
-		
-		return retStr;
+		return answer;
 	}
+	
+    public void permutation(int n, int r, String[] input, boolean[] check, String[] answer, int depth,List outputList) {
+        if(depth == r) {
+        	String str = "";
+        	for(int i=0;i<n;i++){
+        		str+=answer[i];
+        	}
+        	outputList.add(str);
+        }
+
+        for (int i = 0; i < n; i++){
+            if (!check[i]) {
+                check[i] = true;                    // 중복 체크
+                answer[depth] = input[i];
+                permutation(n, r, input, check, answer, depth+1,outputList);
+                check[i] = false;
+            }
+        }
+        
+    }
 	
 	
 }
