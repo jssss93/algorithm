@@ -17,50 +17,81 @@ package algorithm.cjs_20210121;
 public class makeMaxNum {
 	public static void main(String args[]){
 		makeMaxNum sol = new makeMaxNum();
-		String number = "123123";
+		String number = "1924";
 		int k = 2;
 		System.out.println("answer :: "+sol.solution(number, k));
+		
+//		System.out.println("answer :: "+sol.solution2(number, k));
 	}
 	public String solution(String number, int k) {
-        String answer = number;
-//        System.out.println(deleteIndex(number, 1));
-        int cnt=0;
-        int max = 0;
-        
-        
-        	
-        for(int i=0;i<answer.length()-1;i++){
-        	while(cnt<=k ){
-			
-    			System.out.println(cnt+"@@");
-        		for(int j=i+1;j<answer.length();j++){
-        			int dupCnt=0;
-        			System.out.println(answer.charAt(i)+""+"|||||"+answer.charAt(j)+"");
-	        		if((answer.charAt(i)+"").compareTo(answer.charAt(j)+"")<0){
-	        			System.out.println("여기"+i+",,"+j);
-	        			answer = deleteIndex(answer, i);
-	        			i--;j--;
-	        			System.out.println(answer);
-	        			System.out.println();
-	        			cnt++;
-	        			break;
-	        		}else if((answer.charAt(i)+"").compareTo(answer.charAt(j)+"")==0){
-	        			dupCnt++;
-	        		}
-        		}
-        	}
-        }
-        System.out.println(number);
-        for(int i=0;i<number.length();i++){
-//        	number.
-//        	System.out.println(number.charAt(i));
-        }
+//		if(number.length()==k){
+//        	return "0";
+//        }
+		String answer="";
+		StringBuilder sb = new StringBuilder(number);
+		
+        int del_cnt = 0;
+        int idx = 1;
+    	while(del_cnt<k ){
+    		
+//    		System.out.println("idx :: "+idx+"   del_cnt :: "+del_cnt);
+//    		System.out.println(sb.charAt(idx)+",,"+sb.charAt(idx-1));
+    		
+    		if(idx>=1 && sb.charAt(idx)>sb.charAt(idx-1)){
+//    			System.out.println("del");
+    			sb.deleteCharAt(idx-1);
+    			del_cnt++;
+    			idx--;
+    		}else{
+    			if(idx==sb.length()-1 && sb.charAt(idx)<=sb.charAt(idx-1)){
+    				sb.deleteCharAt(idx);
+    				del_cnt++;
+    				idx--;
+    			}else{
+    			idx++;
+    			}
+    		}
+//    		System.out.println("중간결과"+sb.toString());
+//    		System.out.println();
+    	}
+//    	System.out.println("k :: "+k);
+//    	System.out.println("del_cnt :: "+del_cnt);
+    	
+		answer = sb.toString();
         
         return answer;
     }
-	
-	public String deleteIndex(String number,int idx){
-		return number.substring(0,idx)+number.substring(idx+1,number.length());
-	}
+//    public String solution2(String number, int k) {
+//        //빠른 연산을 위해 StringBuilder을 사용했다.
+//        StringBuilder sb = new StringBuilder(number);
+//        int delete_count = 0;
+//        int index = 1;
+//        
+//        while(delete_count != k) {
+//        	System.out.println("index"+index);
+//        	
+//            //전의 숫자와 비교해야 하므로 index는 1부터 시작한다.
+//            //전의 숫자보다 더 크면 전의 숫자를 삭제하고 크기가 줄어들었으므로 index를 줄여준다.
+//            if(index>=1 && sb.charAt(index) > sb.charAt(index-1)) {
+//                sb.deleteCharAt(index-1);
+//                index--;
+//                delete_count++;
+//            } else {
+//                //index가 맨 끝으로 가고, 그 전의 숫자와 작거나 같으면 지금의 숫자를 삭제해준다.
+//                if(index==sb.length()-1 && sb.charAt(index) <= sb.charAt(index-1)) {
+//                    sb.deleteCharAt(index);
+//                    delete_count++;
+//                    index--;
+//                } else {
+//                //그 외의 경우에는 index를 추가해준다.
+//                index++;
+//                }
+//            }
+//        }      
+//        return sb.toString();
+//    }
+//	public String deleteIndex(String number,int idx){
+//		return number.substring(0,idx)+number.substring(idx+1,number.length());
+//	}
     
 }
