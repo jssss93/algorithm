@@ -1,4 +1,4 @@
-package cjs_20210125;
+package algorithm.cjs_20210125.copy;
 
 import java.util.Arrays;
 import java.util.Comparator;

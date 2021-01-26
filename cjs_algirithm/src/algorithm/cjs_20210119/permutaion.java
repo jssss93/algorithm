@@ -2,9 +2,9 @@ package algorithm.cjs_20210119;
 
 public class permutaion {
     public static void main(String[] args) {
-        int n = 3;                                  // 3가지 숫자 중
+        int n = 4;                                  // 3가지 숫자 중
         int r = 3;                                  // 2개를 뽑을 경우
-        int[] input = {1,2,3};                      // 주어진 3가지 숫자  
+        int[] input = {1,2,3,4};                      // 주어진 3가지 숫자  
         int[] answer = new int[r];                  // 정답을 담을 배열        
         boolean[] check = new boolean[n];           // 해당 숫자를 방문했는지 체크
 
@@ -12,7 +12,7 @@ public class permutaion {
         permutation(n, r, input, check, answer, 0);
         System.out.println();
         // 중복순열
-        permutationDup(n, r, input, answer, 0);
+//        permutationDup(n, r, input, answer, 0);
     }
 
     public static void permutation(int n, int r, int[] input, boolean[] check, int[] answer, int depth) {

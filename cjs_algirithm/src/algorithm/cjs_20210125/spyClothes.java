@@ -1,4 +1,4 @@
-package cjs_20210125;
+package algorithm.cjs_20210125;
 
 import java.util.HashMap;
 import java.util.Iterator;
