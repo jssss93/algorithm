@@ -37,21 +37,6 @@ public class _124world {
 	}
     //3진법으로 바꾸는거.
     public String solution(int n) {
-//    	System.out.print(n+"==>");
-//    	//1=>1
-//    	//2=>2
-//    	//4=>3
-//    	String str="";
-//    	String answer = "";
-//    	
-//    	
-//    	while(n!=0 ){
-//            str = (n % 3) + str;
-//            n /= 3;
-//    	}
-//    	int mid=Integer.parseInt(str);
-//        System.out.println(answer);
-//        return answer;
         
         String answer = "";
         int reminder;
@@ -67,10 +52,8 @@ public class _124world {
 
             answer = reminder + answer;
         }
-System.out.println(answer);
+        	System.out.println(answer);
         return answer;
-//        
-    	
     }
     
 	
