@@ -33,7 +33,7 @@ public class findSosu {
 				answer++; 
 			}
 		} 
-//		System.out.println(answer);
+		System.out.println(answer);
 		return answer; 
 			
 	}
