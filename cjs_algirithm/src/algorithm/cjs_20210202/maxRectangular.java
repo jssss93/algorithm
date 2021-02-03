@@ -1,0 +1,112 @@
+package algorithm.cjs_20210202;
+
+//1와 0로 채워진 표(board)가 있습니다. 표 1칸은 1 x 1 의 정사각형으로 이루어져 있습니다.
+//표에서 1로 이루어진 가장 큰 정사각형을 찾아 넓이를 return 하는 solution 함수를 완성해 주세요. (단, 정사각형이란 축에 평행한 정사각형을 말합니다.)
+//
+//예를 들어
+//
+//1	2	3	4
+//0	1	1	1
+//1	1	1	1
+//1	1	1	1
+//0	0	1	0
+//가 있다면 가장 큰 정사각형은
+//
+//1	2	3	4
+//0	1	1	1
+//1	1	1	1
+//1	1	1	1
+//0	0	1	0
+//가 되며 넓이는 9가 되므로 9를 반환해 주면 됩니다.
+//
+//제한사항
+//표(board)는 2차원 배열로 주어집니다.
+//표(board)의 행(row)의 크기 : 1,000 이하의 자연수
+//표(board)의 열(column)의 크기 : 1,000 이하의 자연수
+//표(board)의 값은 1또는 0으로만 이루어져 있습니다.
+//입출력 예
+//board	answer
+//[[0,1,1,1],[1,1,1,1],[1,1,1,1],[0,0,1,0]]	9
+//[[0,0,1,1],[1,1,1,1]]	4
+//입출력 예 설명
+//입출력 예 #1
+//위의 예시와 같습니다.
+//
+//입출력 예 #2
+//| 0 | 0 | 1 | 1 |
+//| 1 | 1 | 1 | 1 |
+//로 가장 큰 정사각형의 넓이는 4가 되므로 4를 return합니다.
+public class maxRectangular {
+	public static void main(String args[]){
+		int[][] board = {
+//							{1,1,1,1},
+//							{1,0,1,1},
+//							{1,1,1,1},
+//							{0,0,1,0}
+				{1,1,1},
+				{0,1,1}
+//				{0},{0}
+						};
+		
+		maxRectangular sol = new maxRectangular();
+		System.out.println("answer ==> "+sol.solution(board));
+	}
+    public int solution(int [][]board)
+    {
+    	int min = board.length >=board[0].length?board[0].length:board.length;
+    	boolean findFlag = true;
+    	int start_i=0;
+    	int start_j=0;
+    	int answer = 0;
+    	
+    	while(findFlag){
+	    	for(int i=start_i;i<start_i+min;i++){
+	    		for(int j=start_j;j<start_j+min;j++){
+//	    			System.out.print("board["+i+"]["+j+"]==>");
+//	    			System.out.println(board[i][j]);
+	    			if(board[i][j]==0){
+//	    				if(i==start_i+min && start_i+min==board.length && 
+//	    						j==start_j+min && start_j+min==board[0].length){
+//	    					return 0;
+//	    				}
+	    				i=start_i+min;
+	    				break;
+	    				
+	    			}
+	    			answer++;
+	    			
+	    		}
+	    	}
+	    	
+	    	if(answer==min*min){
+	    		findFlag=false;
+	    	}else{
+	    		answer=0;
+	    		if(start_i+min==board.length && start_j+min==board[0].length){
+//	    			System.out.println("min--@@@@@@@@@@@@@");
+	    			min--;
+	    			start_i=0;
+	    			start_j=0;
+	    		}else{
+//	    			System.out.println(start_i);
+//	    			System.out.println(start_j);
+//	    			System.out.println(min);//3
+//	    			System.out.println(board.length);
+//	    			System.out.println(board[0].length); 
+	    		
+	    			if(start_i+min<board.length){
+	    				start_i++;
+	    			}else{
+	    				start_i=0;
+	    				start_j++;
+	    			}
+	    		}
+	    	}
+	    	
+    	}
+    	
+
+
+        return answer;
+    }
+}
