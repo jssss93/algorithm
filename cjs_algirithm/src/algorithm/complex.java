@@ -10,15 +10,15 @@ public class complex {
 
 		List<String> arr = new ArrayList<>();
 		arr.add("1");
-		arr.add("1");
-		arr.add("1");
+		arr.add("2");
+		arr.add("3");
 
 		List<String> result = new ArrayList<>();
 		
 		
 		
 		System.out.println("순열 ==>");
-		permutation(arr, result, arr.size(), 2);//순열
+		permutation(arr, result, arr.size(), 3);//순열
 		
 		
 		
