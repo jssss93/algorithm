@@ -1,4 +1,4 @@
-package test;
+package SmartJpDatatest;
 
 import java.io.StringReader;
 

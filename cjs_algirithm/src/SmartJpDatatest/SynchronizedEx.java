@@ -1,4 +1,4 @@
-package test;
+package SmartJpDatatest;
 
 class ATM implements Runnable {
     private long depositeMoney = 10000;
