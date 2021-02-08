@@ -1,10 +1,10 @@
-package test;
+package SmartJpDatatest;
 
-public class SingleThreadEx extends Thread {
+public class SingleThreadEx2 implements Runnable {
+
 	private int[] temp;
 
-	public SingleThreadEx(String threadname) {
-		super(threadname);
+	public SingleThreadEx2() {
 		temp = new int[10];
 
 		for (int start = 0; start < temp.length; start++) {
@@ -12,7 +12,9 @@ public class SingleThreadEx extends Thread {
 		}
 	}
 
+	@Override
 	public void run() {
+		// TODO Auto-generated method stub
 		for (int start : temp) {
 			try {
 				Thread.sleep(1000);
@@ -21,13 +23,17 @@ public class SingleThreadEx extends Thread {
 				ie.printStackTrace();
 				// TODO: handle exception
 			}
-			System.out.println("스레드이름:" + currentThread().getName());
+
+			System.out.println("스레드이름:" + Thread.currentThread().getName());
 			System.out.println("temp value :" + start);
 		}
 	}
 
 	public static void main(String[] args) {
-		SingleThreadEx st = new SingleThreadEx("첫번째");
-		st.start();
+
+		SingleThreadEx2 ct = new SingleThreadEx2();
+		Thread t = new Thread(ct, "첫번째");
+
+		t.start();
 	}
 }
