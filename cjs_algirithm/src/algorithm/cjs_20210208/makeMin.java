@@ -32,6 +32,9 @@ import java.util.Collections;
 //A에서 첫번째 숫자인 1, B에서 두번째 숫자인 4를 뽑아 곱하여 더합니다. (누적된 값 : 4) 다음,
 //A에서 두번째 숫자인 2, B에서 첫번째 숫자인 3을 뽑아 곱하여 더합니다. (누적된 값 : 4 + 6 = 10)
 //이 경우가 최소이므로 10을 return 합니다.
+
+//효율성 테스트 하나 실패.
+
 public class makeMin {
 	public static void main(String args[]){
 		int[] A  = {1,2};
@@ -42,14 +45,26 @@ public class makeMin {
 	}
 	public int solution(int[] A, int[] B)
     {
-		Integer[] A2 = Arrays.stream(A).boxed().toArray(Integer[] :: new);
-		Integer[] B2 = Arrays.stream(B).boxed().toArray(Integer[] :: new);
-		Arrays.sort(A2);
-		Arrays.sort(B2,Collections.reverseOrder());
+		Integer arr[] = new Integer[A.length]; // Integer 배열 생성 및 초기화
+		Integer arr2[] = new Integer[B.length]; // Integer 배열 생성 및 초기화
 		
+		for(int i = 0; i<B.length; i++) {
+			arr[i] = A[i]; // Integer 형태의 arr2에 arr 배열의 값 넣어주기
+			arr2[i] = B[i]; // Integer 형태의 arr2에 arr 배열의 값 넣어주기
+		}
+		
+		
+//		Integer[] A2 = Arrays.stream(A).boxed().toArray(Integer[] :: new);
+//		Integer[] B2 = Arrays.stream(B).boxed().toArray(Integer[] :: new);
+//		Arrays.sort(A2);
+//		Arrays.sort(B2,Collections.reverseOrder());
+		
+		
+		Arrays.sort(arr);
+		Arrays.sort(arr2,Collections.reverseOrder());
         int answer = 0;
-        for(int i=0;i<A2.length;i++){
-        	answer+=A2[i]*B2[i];
+        for(int i=0;i<arr.length;i++){
+        	answer+=arr[i]*arr2[i];
         }
 
         return answer;
