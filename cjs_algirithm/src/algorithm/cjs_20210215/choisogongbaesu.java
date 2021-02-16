@@ -14,7 +14,7 @@ public class choisogongbaesu {
 //	[1,2,3] 6
 	public static void main(String args[]){
 	
-		int[] arr = {1,2,3};
+		int[] arr = {24,14};
 		choisogongbaesu sol = new choisogongbaesu();
 		System.out.println("answer==>"+sol.solution(arr));
 	}
