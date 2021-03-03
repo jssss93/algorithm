@@ -17,14 +17,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-public class jstest {
+public class dawjonesDataInsert {
 	static Connection con = null;
 	static int searchCnt=0;
 	static List<String> searchList = new ArrayList();
 	
 	public static void main(String[] args) throws ParseException, java.text.ParseException {
 //		String rslt=
-		String root="C:/Users/user/Desktop/다우존스 데이터";
+		
+		String root="C:/Users/user/Desktop/다우존스 데이터/스냅샷데이터/4";
 		searchDirList(root,"json");
 		System.out.println(searchList);
 		for(int i=0;i<searchList.size();i++){
@@ -86,6 +87,7 @@ public class jstest {
 			while ((line = bfReader.readLine()) != null) {
 				lineArray.add(line);
 			}
+			int passCnt = 0;
 			for (int i = 0; i < lineArray.size(); i++) {
 				Object obj = parser.parse(lineArray.get(i));
 				JSONObject jo = (JSONObject) obj;
@@ -103,9 +105,16 @@ public class jstest {
 //					System.out.println(key +"  ::  "+value);
 //				}
 //				System.out.println();
-				System.out.println(cnt+"번째 :: "+insert_KNA(jo));
+				String str="실패";
+				
+				if(!insert_KNA(jo)){
+					passCnt++;
+					str="성공";
+				}
+				System.out.println(cnt+"번째 :: "+str);
 //146.617초
 			}
+			System.out.println("총 "+passCnt+" 개 성공");
 			
 			
 		} catch (FileNotFoundException e) {
@@ -131,16 +140,16 @@ public class jstest {
 		
         PreparedStatement pstmt=null;
     
-        String url = "jdbc:postgresql://58.149.174.155:5433/kna";
+        String url = "jdbc:postgresql://58.229.178.229:5432/kna";
         String user = "kna";
-        String password = "kna123";
+        String password = "kna123$%^";
  
         try {
             con = DriverManager.getConnection(url, user, password);
             
             	
             	String query="";
-            	query = "INSERT INTO dawjones("+
+            	query = "INSERT INTO dawjones2("+
 					            "copyright, subject_codes, art, modification_datetime, body, company_codes_occur_ticker_exchange, "+
 					            "company_codes_occur, company_codes_about, company_codes_lineage, "+
 					            "company_codes_ticker_exchange, snippet, company_codes_relevance_ticker_exchange, "+
@@ -150,7 +159,7 @@ public class jstest {
 					            "company_codes_association, person_codes, byline, dateline, company_codes_relevance, "+
 					            "source_code, an, word_count, company_codes, industy_codes, title, "+
 					            "publication_datetime, publisher_name, action, document_type, "+
-					            "reg_date, upt_date, currency_codes, company_codes_about_ticker_exchange)"+
+					            "reg_date, upt_date, currency_codes, company_codes_about_ticker_exchange,type)"+
 					    "VALUES (?, ?, ?,  to_timestamp(?/1000)  ,?, ?, "+
 					            "?, ?, ?, "+
 					            "?, ?, ?, "+
@@ -160,7 +169,7 @@ public class jstest {
 					            "?, ?, ?, ?, ?, "+
 					            "?, ?, ?, ?, ?, ?, "+
 					            "to_timestamp(?/1000), ?, ?, ?, "+
-					            "?, ?, ?, ?)";	
+					            "?, ?, ?, ?,'4')";	
             	
             	pstmt = con.prepareStatement(query);
 
