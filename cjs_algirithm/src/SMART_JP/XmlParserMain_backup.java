@@ -20,21 +20,18 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import oracle.jdbc.OracleResultSet;
-//import oracle.jdbc.driver.OracleResultSet;
 import oracle.sql.CLOB;
 
-public class XmlParserMain {
+public class XmlParserMain_backup {
 	
-	File path = new File("D:\\JPO\\2005\\");
+	File path = new File("D:\\JPO\\2020");
 	final String fatternName = ".xml" ;
 	static int xmlCnt=0;
 	static List<String> xmlList = new ArrayList();
 	
 	
 	public static void main(String[] args) {
-		searchDirList("D:/JPO/2005/");
-//		searchDirList("D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641");
-//		"D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641"
+		searchDirList("D:/JPO/2020");
 //		List<String> dirList = searchDirList("D:/JPO/2020");
 //		List<String> dirList = searchDirList("D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641");
 		System.out.println(xmlCnt);
@@ -64,7 +61,6 @@ public class XmlParserMain {
 				System.out.println("doc_id :: "+doc_id +"     applno :: "+applno);
 				
 				
-				
 				Elements eles2 = doc.select("claim");
 //				List<String> list = new ArrayList();
 				int claim_text_cnt=0;
@@ -84,7 +80,7 @@ public class XmlParserMain {
 		}
 	}
 
-	 public static void insertData(String doc_id, String applno, int claim_num,String claim__text) throws SQLException {
+	 public static void insertData(String doc_id,String applno,int claim_num,String claim__text) throws SQLException {
 		 System.out.println("===============insert start===============");
 //			String resource = "D:/workspace/textParsing/bin/textParsing/prop/info.properties";
 //			Properties properties = new Properties();
@@ -121,40 +117,45 @@ public class XmlParserMain {
 				
 				////////////////////����
 				
-				String strQuery = "INSERT INTO JP_CLAIM (DOCID,APPLNO,CLAIM_NUM,CLAIM) VALUES( ?, ?, ?,  EMPTY_CLOB() )";
+				String strQuery = "INSERT INTO JP_CLAIM2 (DOCID,CLAIM_NUM,CLAIM2) VALUES( ?, ?,  EMPTY_CLOB() )";
+				
 				PreparedStatement pstmt = con.prepareStatement(strQuery);
 				
 				pstmt.setString(1, doc_id);
-				pstmt.setString(2, applno);
-		        pstmt.setString(3, claim_num+"");
+//				pstmt.setString(2, applno);
+		        pstmt.setString(2, claim_num+"");
 		        int nRowCnt = pstmt.executeUpdate();
 		        pstmt.close();
 
 
 		        if( nRowCnt == 1 ) {
 		            // Make Select Query & Row Lock
-		            strQuery = "SELECT CLAIM FROM JP_CLAIM WHERE DOCID = ? AND CLAIM_NUM = ? FOR UPDATE";
+		            strQuery = "SELECT CLAIM2 FROM JP_CLAIM2 WHERE DOCID = ? AND APPLNO =? AND CLAIM_NUM = ? FOR UPDATE";
+		            
 		            pstmt = con.prepareStatement(strQuery);
 		            pstmt.setString(1, doc_id);
-			        pstmt.setString(2, claim_num+"");
+		            pstmt.setString(2, applno);
+			        pstmt.setString(3, claim_num+"");
 		            ResultSet rs = pstmt.executeQuery();
 		 
 		            // Write CLOB Data
 		            String strCLOB = claim__text;
 		            Boolean flag1=false;
 		            Boolean flag2=false;
-		            if(strCLOB.toString().contains("۰��")){
-	                	flag1=true;
-	                	//��� CLAIM_TYPE=1
-	                	
-	                }else if(strCLOB.toString().contains("ڪ��")){
-	                	flag2=true;
-	                	//��ǰ CLAIM_TYPE=2
-	                	
-	                }
+		            System.out.println("@@@@@@@@@@@@@@");
 		            if( rs.next() ) {
-		                CLOB clob = ((OracleResultSet)rs).getCLOB("CLAIM");
+		            	System.out.println("@@@@@@@@@@@@@@22");
+		                CLOB clob = ((OracleResultSet)rs).getCLOB("CLAIM2");
 		                
+		                if(clob.toString().contains("۰��")){
+		                	flag1=true;
+		                	//��� CLAIM_TYPE=1
+		                	
+		                }else if(clob.toString().contains("ڪ��")){
+		                	flag2=true;
+		                	//��ǰ CLAIM_TYPE=1
+		                	
+		                }
 		                Writer writer = clob.getCharacterOutputStream();
 		                Reader reader = new CharArrayReader(strCLOB.toCharArray());
 		                char[] buffer = new char[1024];
@@ -166,26 +167,25 @@ public class XmlParserMain {
 		                reader.close();
 		                writer.close();
 		            }
-		             
-		            String uptQuery = "UPDATE JP_CLAIM SET CLAIM_TYPE = ? WHERE DOCID= ? AND CLAIM_NUM = ?";
-					PreparedStatement pstmt2 = con.prepareStatement(uptQuery);
-					String claim_type="3";
-					System.out.println(flag1);
-					System.out.println(flag2);
-					if(flag1){
-						claim_type="1";
-					}else if(flag2){
-						claim_type="2";
-					}else{
-						claim_type="3";
-					}
-					System.out.println(claim_type+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-					pstmt2 = con.prepareStatement(uptQuery);
-					pstmt2.setString(1, claim_type);
-					pstmt2.setString(2, doc_id);
-		            pstmt2.setString(3, claim_num+"");
-		            int res = pstmt2.executeUpdate();
-		            pstmt2.close();
+		            
+//		            String uptQuery = "UPDATE JP_CLAIM2 SET CLAIM_TYPE = ? WHERE DOCID= ? AND CLAIM_NUM = ?";
+//					PreparedStatement pstmt2 = con.prepareStatement(uptQuery);
+//					String claim_type="3";
+//					System.out.println(flag1);
+//					System.out.println(flag2);
+//					if(flag1){
+//						claim_type="1";
+//					}else if(flag2){
+//						claim_type="2";
+//					}else{
+//						claim_type="3";
+//					}
+//					pstmt2 = con.prepareStatement(uptQuery);
+//					pstmt2.setString(1, claim_type);
+//					pstmt2.setString(2, doc_id);
+//		            pstmt2.setString(3, applno);
+//		            int res = pstmt2.executeUpdate();
+//		            pstmt2.close();
 		            
 		            // Commit
 		            con.commit();
