@@ -23,18 +23,16 @@ import oracle.jdbc.OracleResultSet;
 //import oracle.jdbc.driver.OracleResultSet;
 import oracle.sql.CLOB;
 
-public class XmlParserMain {
+public class XmlParserMain_bac {
 	
-	File path = new File("D:\\JPO\\2005\\");
+	File path = new File("D:\\JPO\\2020");
 	final String fatternName = ".xml" ;
 	static int xmlCnt=0;
 	static List<String> xmlList = new ArrayList();
 	
 	
 	public static void main(String[] args) {
-		searchDirList("D:/JPO/2005/");
-//		searchDirList("D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641");
-//		"D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641"
+		searchDirList("D:/JPO/2020");
 //		List<String> dirList = searchDirList("D:/JPO/2020");
 //		List<String> dirList = searchDirList("D:\\JPO\\2020\\JPO_2020-005\\2020-005\\DOCUMENT\\B9\\0006642001\\0006642601\\0006642641");
 		System.out.println(xmlCnt);
@@ -53,38 +51,27 @@ public class XmlParserMain {
 					Elements subnode = ele.select("doc-number");
 					doc_id=subnode.text();
 				}
-				
-				
-				String applno= "";
-				Elements eles1 = doc.select("application-reference");
-				for (Element ele1 : eles1) {
-					Elements subnode = ele1.select("doc-number");
-					applno=subnode.text();
-				}
-				System.out.println("doc_id :: "+doc_id +"     applno :: "+applno);
-				
-				
-				
+				System.out.println("doc_id :: "+doc_id);
 				Elements eles2 = doc.select("claim");
 //				List<String> list = new ArrayList();
 				int claim_text_cnt=0;
 				for (Element ele2 : eles2) {
 					Elements subnode = ele2.select("claim-text");
-//					System.out.println(subnode.text());
-					insertData(doc_id,applno,++claim_text_cnt,subnode.text());
+					System.out.println(subnode.text());
+					insertData(doc_id,++claim_text_cnt,subnode.text());
 //					list.add(subnode.text());
 				}
 				
 				
 //				System.out.println(list.get(0));
-//				System.out.println(list.size()+"�� claimList");
+//				System.out.println(list.size()+"개 claimList");
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	 public static void insertData(String doc_id, String applno, int claim_num,String claim__text) throws SQLException {
+	 public static void insertData(String doc_id,int claim_num,String claim__text) throws SQLException {
 		 System.out.println("===============insert start===============");
 //			String resource = "D:/workspace/textParsing/bin/textParsing/prop/info.properties";
 //			Properties properties = new Properties();
@@ -97,7 +84,7 @@ public class XmlParserMain {
 			props.put("user", "SMART_JP");
 			props.put("password", "SMART_JP");
 			
-//			String[] data = string.split("��");
+//			String[] data = string.split("¶");
 			
 			try {
 				con = DriverManager.getConnection(url, props);
@@ -119,21 +106,20 @@ public class XmlParserMain {
 //				stmt.close();
 				
 				
-				////////////////////����
+				////////////////////변경
 				
-				String strQuery = "INSERT INTO JP_CLAIM (DOCID,APPLNO,CLAIM_NUM,CLAIM) VALUES( ?, ?, ?,  EMPTY_CLOB() )";
+				String strQuery = "INSERT INTO JP_CLAIM (DOCID,CLAIM_NUM,CLAIM2) VALUES( ?, ?,  EMPTY_CLOB() )";
 				PreparedStatement pstmt = con.prepareStatement(strQuery);
 				
 				pstmt.setString(1, doc_id);
-				pstmt.setString(2, applno);
-		        pstmt.setString(3, claim_num+"");
+		        pstmt.setString(2, claim_num+"");
 		        int nRowCnt = pstmt.executeUpdate();
 		        pstmt.close();
 
 
 		        if( nRowCnt == 1 ) {
 		            // Make Select Query & Row Lock
-		            strQuery = "SELECT CLAIM FROM JP_CLAIM WHERE DOCID = ? AND CLAIM_NUM = ? FOR UPDATE";
+		            strQuery = "SELECT CLAIM2 FROM JP_CLAIM WHERE DOCID = ? AND CLAIM_NUM = ? FOR UPDATE";
 		            pstmt = con.prepareStatement(strQuery);
 		            pstmt.setString(1, doc_id);
 			        pstmt.setString(2, claim_num+"");
@@ -141,20 +127,8 @@ public class XmlParserMain {
 		 
 		            // Write CLOB Data
 		            String strCLOB = claim__text;
-		            Boolean flag1=false;
-		            Boolean flag2=false;
-		            if(strCLOB.toString().contains("۰��")){
-	                	flag1=true;
-	                	//��� CLAIM_TYPE=1
-	                	
-	                }else if(strCLOB.toString().contains("ڪ��")){
-	                	flag2=true;
-	                	//��ǰ CLAIM_TYPE=2
-	                	
-	                }
 		            if( rs.next() ) {
-		                CLOB clob = ((OracleResultSet)rs).getCLOB("CLAIM");
-		                
+		                CLOB clob = ((OracleResultSet)rs).getCLOB("CLAIM2");
 		                Writer writer = clob.getCharacterOutputStream();
 		                Reader reader = new CharArrayReader(strCLOB.toCharArray());
 		                char[] buffer = new char[1024];
@@ -167,26 +141,6 @@ public class XmlParserMain {
 		                writer.close();
 		            }
 		             
-		            String uptQuery = "UPDATE JP_CLAIM SET CLAIM_TYPE = ? WHERE DOCID= ? AND CLAIM_NUM = ?";
-					PreparedStatement pstmt2 = con.prepareStatement(uptQuery);
-					String claim_type="3";
-					System.out.println(flag1);
-					System.out.println(flag2);
-					if(flag1){
-						claim_type="1";
-					}else if(flag2){
-						claim_type="2";
-					}else{
-						claim_type="3";
-					}
-					System.out.println(claim_type+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-					pstmt2 = con.prepareStatement(uptQuery);
-					pstmt2.setString(1, claim_type);
-					pstmt2.setString(2, doc_id);
-		            pstmt2.setString(3, claim_num+"");
-		            int res = pstmt2.executeUpdate();
-		            pstmt2.close();
-		            
 		            // Commit
 		            con.commit();
 		            con.setAutoCommit(true);
@@ -226,7 +180,7 @@ public class XmlParserMain {
 			for (int i = 0; i < fileList.length; i++) {
 				File file = fileList[i];
 				if (file.isFile()) {
-//					System.out.println("\t ���� �̸� = " + file.getName());
+//					System.out.println("\t 파일 이름 = " + file.getName());
 					String fileName = file.getName();
 					int pos = fileName .lastIndexOf(".");
 					String ext = fileName.substring(pos+1, fileName.length());
@@ -244,7 +198,7 @@ public class XmlParserMain {
 		} catch (IOException e) {
 
 		}
-		System.out.println(xmlList.size()+"�� ��ȸ.");
+		System.out.println(xmlList.size()+"건 조회.");
 //		return list;
 	}
 	
