@@ -24,10 +24,9 @@ public class dawjonesDataInsert {
 	
 	public static void main(String[] args) throws ParseException, java.text.ParseException {
 //		String rslt=
+		String root="E:/0.원전수출협회_2020/원전수출정보지원시스템/0.다우존스/test/";
 		
-		String root="C:/Users/user/Desktop/다우존스 데이터/스냅샷데이터/4";
 		searchDirList(root,"json");
-		System.out.println(searchList);
 		for(int i=0;i<searchList.size();i++){
 			String rslt = insertDJ(searchList.get(i));
 			if(rslt.equals("1")){
@@ -143,84 +142,90 @@ public class dawjonesDataInsert {
         String url = "jdbc:postgresql://58.229.178.229:5432/kna";
         String user = "kna";
         String password = "kna123$%^";
- 
+//        String url = "jdbc:postgresql://localhost:5432/kna_20210218";
+//        String user = "postgres";
+//        String password = "postgres";
         try {
+        	System.out.println((String)jo.get("industry_codes"));
             con = DriverManager.getConnection(url, user, password);
             
             	
             	String query="";
-            	query = "INSERT INTO dawjones2("+
-					            "copyright, subject_codes, art, modification_datetime, body, company_codes_occur_ticker_exchange, "+
-					            "company_codes_occur, company_codes_about, company_codes_lineage, "+
-					            "company_codes_ticker_exchange, snippet, company_codes_relevance_ticker_exchange, "+
-					            "publication_date, market_index_codes, credit, section, company_codes_association_ticker_exchange, "+
-					            "region_of_origin, company_codes_lineage_ticker_exchange, ingestion_datetime, "+
-					            "modification_date, source_name, language_code, region_codes, "+
-					            "company_codes_association, person_codes, byline, dateline, company_codes_relevance, "+
-					            "source_code, an, word_count, company_codes, industy_codes, title, "+
-					            "publication_datetime, publisher_name, action, document_type, "+
-					            "reg_date, upt_date, currency_codes, company_codes_about_ticker_exchange,type)"+
-					    "VALUES (?, ?, ?,  to_timestamp(?/1000)  ,?, ?, "+
-					            "?, ?, ?, "+
-					            "?, ?, ?, "+
-					            "to_timestamp(?/1000), ?, ?, ?, ?, "+
-					            "?, ?, to_timestamp(?/1000), "+
-					            "to_timestamp(?/1000), ?, ?, ?, "+
-					            "?, ?, ?, ?, ?, "+
-					            "?, ?, ?, ?, ?, ?, "+
-					            "to_timestamp(?/1000), ?, ?, ?, "+
-					            "?, ?, ?, ?,'4')";	
+            	query = "UPDATE kna.dawjones2 set industry_codes = ? where an = ?";
+//					            "copyright, subject_codes, art, modification_datetime, body, company_codes_occur_ticker_exchange, "+
+//					            "company_codes_occur, company_codes_about, company_codes_lineage, "+
+//					            "company_codes_ticker_exchange, snippet, company_codes_relevance_ticker_exchange, "+
+//					            "publication_date, market_index_codes, credit, section, company_codes_association_ticker_exchange, "+
+//					            "region_of_origin, company_codes_lineage_ticker_exchange, ingestion_datetime, "+
+//					            "modification_date, source_name, language_code, region_codes, "+
+//					            "company_codes_association, person_codes, byline, dateline, company_codes_relevance, "+
+//					            "source_code, an, word_count, company_codes, industy_codes, title, "+
+//					            "publication_datetime, publisher_name, action, document_type, "+
+//					            "reg_date, upt_date, currency_codes, company_codes_about_ticker_exchange,type)"+
+//					    "VALUES (?, ?, ?,  to_timestamp(?/1000)  ,?, ?, "+
+//					            "?, ?, ?, "+
+//					            "?, ?, ?, "+
+//					            "to_timestamp(?/1000), ?, ?, ?, ?, "+
+//					            "?, ?, to_timestamp(?/1000), "+
+//					            "to_timestamp(?/1000), ?, ?, ?, "+
+//					            "?, ?, ?, ?, ?, "+
+//					            "?, ?, ?, ?, ?, ?, "+
+//					            "to_timestamp(?/1000), ?, ?, ?, "+
+//					            "?, ?, ?, ?,'4')";	
             	
             	pstmt = con.prepareStatement(query);
 
             	
-	            pstmt.setString(1, (String) jo.get("copyright"));
-	            pstmt.setString(2, (String) jo.get("subject_codes"));
-	            pstmt.setString(3, (String) jo.get("art"));
-	            pstmt.setLong(4, Long.parseLong(""+ jo.get("modification_datetime")));
-	            pstmt.setString(5, (String) jo.get("body"));
-	            pstmt.setString(6, (String) jo.get("company_codes_occur_ticker_exchange"));
-	            pstmt.setString(7, (String) jo.get("company_codes_occur"));
-	            pstmt.setString(8, (String) jo.get("company_codes_about"));
-	            pstmt.setString(9, (String) jo.get("company_codes_lineage"));
-	            pstmt.setString(10, (String) jo.get("company_codes_ticker_exchange"));
-	            pstmt.setString(11, (String) jo.get("snippet"));
-	            pstmt.setString(12, (String) jo.get("company_codes_relevance_ticker_exchange"));
-	            pstmt.setLong(13, Long.parseLong(""+ jo.get("publication_date")));
-	            pstmt.setString(14, (String) jo.get("market_index_codes"));
-	            pstmt.setString(15, (String) jo.get("credit"));
-	            pstmt.setString(16, (String) jo.get("section"));
-	            pstmt.setString(17, (String) jo.get("company_codes_association_ticker_exchange"));
-	            pstmt.setString(18, (String) jo.get("region_of_origin"));
-	            pstmt.setString(19, (String) jo.get("company_codes_lineage_ticker_exchange"));
-	            pstmt.setLong(20, Long.parseLong(""+ jo.get("ingestion_datetime")));
-	            pstmt.setLong(21, Long.parseLong(""+ jo.get("modification_date")));
-	            pstmt.setString(22, (String) jo.get("source_name"));
-	            pstmt.setString(23, (String) jo.get("language_code"));
-	            pstmt.setString(24, (String) jo.get("region_codes"));
-	            pstmt.setString(25, (String) jo.get("company_codes_association"));
-	            pstmt.setString(26, (String) jo.get("person_codes"));
-	            pstmt.setString(27, (String) jo.get("byline"));
-	            pstmt.setString(28, (String) jo.get("dateline"));
-	            pstmt.setString(29, (String) jo.get("company_codes_relevance"));
-	            pstmt.setString(30, (String) jo.get("source_code"));
-	            pstmt.setString(31, (String) jo.get("an"));
-	            pstmt.setString(32, (String) jo.get("word_count"));
-	            pstmt.setString(33, (String) jo.get("company_codes"));
-	            pstmt.setString(34, (String) jo.get("industy_codes"));
-	            pstmt.setString(35, (String) jo.get("title"));
-	            pstmt.setLong(36, Long.parseLong(""+ jo.get("publication_datetime")));
-	            pstmt.setString(37, (String) jo.get("publisher_name"));
-	            pstmt.setString(38, (String) jo.get("action"));
-	            pstmt.setString(39, (String) jo.get("document_type"));
-	            pstmt.setTimestamp(40, new java.sql.Timestamp(0) );
-	            pstmt.setTimestamp(41,  new java.sql.Timestamp(0));
-	            pstmt.setString(42, (String) jo.get("currency_codes"));
-	            pstmt.setString(43, (String) jo.get("company_codes_about_ticker_exchange"));
+	            pstmt.setString(1, (String) jo.get("industry_codes"));
+	            pstmt.setString(2, (String) jo.get("an"));
+//	            pstmt.setString(3, (String) jo.get("art"));
+//	            pstmt.setLong(4, Long.parseLong(""+ jo.get("modification_datetime")));
+//	            pstmt.setString(5, (String) jo.get("body"));
+//	            pstmt.setString(6, (String) jo.get("company_codes_occur_ticker_exchange"));
+//	            pstmt.setString(7, (String) jo.get("company_codes_occur"));
+//	            pstmt.setString(8, (String) jo.get("company_codes_about"));
+//	            pstmt.setString(9, (String) jo.get("company_codes_lineage"));
+//	            pstmt.setString(10, (String) jo.get("company_codes_ticker_exchange"));
+//	            pstmt.setString(11, (String) jo.get("snippet"));
+//	            pstmt.setString(12, (String) jo.get("company_codes_relevance_ticker_exchange"));
+//	            pstmt.setLong(13, Long.parseLong(""+ jo.get("publication_date")));
+//	            pstmt.setString(14, (String) jo.get("market_index_codes"));
+//	            pstmt.setString(15, (String) jo.get("credit"));
+//	            pstmt.setString(16, (String) jo.get("section"));
+//	            pstmt.setString(17, (String) jo.get("company_codes_association_ticker_exchange"));
+//	            pstmt.setString(18, (String) jo.get("region_of_origin"));
+//	            pstmt.setString(19, (String) jo.get("company_codes_lineage_ticker_exchange"));
+//	            pstmt.setLong(20, Long.parseLong(""+ jo.get("ingestion_datetime")));
+//	            pstmt.setLong(21, Long.parseLong(""+ jo.get("modification_date")));
+//	            pstmt.setString(22, (String) jo.get("source_name"));
+//	            pstmt.setString(23, (String) jo.get("language_code"));
+//	            pstmt.setString(24, (String) jo.get("region_codes"));
+//	            pstmt.setString(25, (String) jo.get("company_codes_association"));
+//	            pstmt.setString(26, (String) jo.get("person_codes"));
+//	            pstmt.setString(27, (String) jo.get("byline"));
+//	            pstmt.setString(28, (String) jo.get("dateline"));
+//	            pstmt.setString(29, (String) jo.get("company_codes_relevance"));
+//	            pstmt.setString(30, (String) jo.get("source_code"));
+//	            pstmt.setString(31, (String) jo.get("an"));
+//	            pstmt.setString(32, (String) jo.get("word_count"));
+//	            pstmt.setString(33, (String) jo.get("company_codes"));
+//	            pstmt.setString(34, (String) jo.get("industy_codes"));
+//	            pstmt.setString(35, (String) jo.get("title"));
+//	            pstmt.setLong(36, Long.parseLong(""+ jo.get("publication_datetime")));
+//	            pstmt.setString(37, (String) jo.get("publisher_name"));
+//	            pstmt.setString(38, (String) jo.get("action"));
+//	            pstmt.setString(39, (String) jo.get("document_type"));
+//	            pstmt.setTimestamp(40, new java.sql.Timestamp(0) );
+//	            pstmt.setTimestamp(41,  new java.sql.Timestamp(0));
+//	            pstmt.setString(42, (String) jo.get("currency_codes"));
+//	            pstmt.setString(43, (String) jo.get("company_codes_about_ticker_exchange"));
 	            
 	            boolean result = pstmt.execute(); //false 면 정상 실행.
 	            rslt=result;
-            
+	            
+//	            rslt = false;
+	            
+	            
            
  
         } catch (SQLException ex) {

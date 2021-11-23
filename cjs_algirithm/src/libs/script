@@ -1,0 +1,52 @@
+https://haenny.tistory.com/106
+
+script
+window.onload = function(){ 
+	getImage(); 
+	document.querySelector('#check').addEventListener('click', function(){ 
+		var params = {answer : $("#answer").val()};
+		console.log(params)
+		$.ajax({
+			url : "${ctx}/chkAnswer.do"
+	        , type : "POST"
+	        , data : params
+// 			, async:false
+	        , success:function(returnData) {
+	        	alert(returnData); 
+	        	getImage(); 
+	        	document.querySelector('#answer').setAttribute('value', ''); 
+	        }
+		});
+// 		$.ajax('${ctx}/chkAnswer.do', params, function(returnData){ 
+// 			if(returnData == 200){ 
+// 				alert('입력값이 일치합니다.'); 
+// 				// 성공 코드
+// 			}else{ 
+// 				alert('입력값이 일치하지 않습니다.'); 
+// 				getImage(); 
+// 				document.querySelector('#answer').setAttribute('value', ''); 
+// 			} 
+// 		}, 'json'); 
+	});
+
+}
+
+function getImage(){ 
+	var rand = Math.random();
+	var url = '${ctx}/captchaImg.do?rand='+rand; document.querySelector('img').setAttribute('src', url);
+}
+
+
+html
+
+<div style="overflow:hidden">
+	                    <div style="float:left"> 
+		                    <img title="캡차이미지" src="/captchaImg.do" alt="캡차이미지"/> 
+		                    <div id="ccaudio" style="display:none"></div> 
+	                    </div> 
+	                    <div style="padding:3px"> 
+	                    	<input id="answer" type="text" value=""> 
+	                    	<input id="check" type="button" value="확인"/> 
+	                    </div>
+
+                    </div>
