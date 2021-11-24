@@ -89,16 +89,6 @@ public class insertIPC {
 					
 					
 				}
-//				for (Element ele2 : eles2) {
-//					Elements subnode = ele2.select("further-clsf");
-//					List list= subnode.eachText();
-//					for(int j=0;j<list.size();i++){
-//						ipc_cd=list.get(i)+"";
-//						
-//					}
-//					
-//					
-//				}
 				
 			} catch (Throwable e) {
 				e.printStackTrace();
