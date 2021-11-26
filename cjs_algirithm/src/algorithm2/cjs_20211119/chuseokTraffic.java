@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.poi.util.SystemOutLogger;
 
 public class chuseokTraffic {
 

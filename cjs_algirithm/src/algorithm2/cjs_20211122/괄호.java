@@ -4,21 +4,20 @@ import java.util.Stack;
 
 public class 괄호 {
 	public static void main(String args[]) {
-		String p = "()))((()";
+		
+//		String p = "(()())()";	
 //		String p = ")(";
-//		String p = "(()())()";
-		//)(
-		//(()())()
+		String p = "()))((()";  //==>()(())()
 		
 		괄호.solution(p);
 	}
 	public static String solution(String p) {
-        String answer = "";
-        
+		String answer ="";
+		
         if(right(p)) {
         	answer = p;
         }else {
-    		answer = retry(p,answer);
+        	answer = retry(p,answer);
         }
         System.out.println("answer ==>"+answer);
         //1. 올바른 괄호 판단 및 분리
@@ -26,23 +25,32 @@ public class 괄호 {
         return answer;
     }
 	public static String retry(String p,String answer) {
+		System.out.println("\n");
 		System.out.println("중간p"+p);
 		System.out.println("중간a"+answer);
+		if(p.length()==2) {
+			
+			return "()";
+		}
     	for(int i=2;i<p.length();i=i+2) {
     		
     		String u = p.substring(0,i);
     		String v = p.substring(i,p.length());
-    		System.out.println(u);
-    		System.out.println(v);
-    		System.out.println("###");
+    		
     		if(plat(u)) {
-    			System.out.println("균형잡힌 문자열");
+    			System.out.println("u :: "+u);
+        		System.out.println("v :: "+v);
+        		System.out.println("###");
+    			System.out.println(u+"U균형잡힌 문자열");
+    			
+    			
     			if(right(u)) {
-    				System.out.println("올바른 문자열");
-    				answer += u+ retry(v, answer);
+    				System.out.println(u+"U올바른 문자열");
+    				answer += u+ retry(v,answer);
     			}else {
-    				System.out.println("올바르지않은 문자열");
-    				answer += "("+ retry(v, answer) +")"+reserve(u);
+    				System.out.println(u+"U올바르지않은 문자열");
+    				answer += "("+ retry(v,answer) +")"+reserve(u);
+    				System.out.println(answer+"!!!");
     			}
     			return answer;
     		}
